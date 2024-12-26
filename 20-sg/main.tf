@@ -46,7 +46,7 @@ module "ansible_sg" {
     source = "git::https://github.com/ramchandra90/terraform-aws-security-groups.git?ref=main"
     project_name = var.project_name
     environment = var.environment
-    sg_name = "bastion"
+    sg_name = "ansible"
     vpc_id = local.vpc_id
     common_tags = var.common_tags
     sg_tags = var.ansible_sg_tags
@@ -113,7 +113,7 @@ resource "aws_security_group_rule" "mysql_ansible" {
   to_port           = 22
   protocol          = "tcp"
   source_security_group_id   = module.ansible_sg.id
-  security_group_id = module.backend_sg.id
+  security_group_id = module.mysql_sg.id
 }
 
 resource "aws_security_group_rule" "frontend_ansible" {
