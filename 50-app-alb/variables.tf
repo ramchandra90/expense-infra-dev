@@ -1,6 +1,5 @@
 variable "project_name" {
     default = "expense"
-
 }
 
 variable "environment" {
@@ -9,17 +8,18 @@ variable "environment" {
 
 variable "common_tags" {
     default = {
-        project = "expense"
-        terraform = "true"
-        environment = "dev"
+        Project = "expense"
+        Terraform = "true"
+        Environment = "dev"
     }
 }
 
-variable "rds_tags" {
+variable "app_alb_tags" {
     default = {
-        component = "mysql"
+        Component = "app-alb"
     }
 }
+
 
 variable "zone_name" {
     default = "dawsnz.online"
