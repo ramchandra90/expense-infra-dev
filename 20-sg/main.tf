@@ -64,14 +64,25 @@ module "app_alb_sg" {
 
 }  
 
+module "web_alb_sg" {
+    source = "git::https://github.com/ramchandra90/terraform-aws-security-groups.git?ref=main"
+    project_name = var.project_name
+    environment = var.environment
+    sg_name = "web-alb" #expense-dev-app-alb
+    vpc_id = local.vpc_id
+    common_tags = var.common_tags
+    sg_tags = var.web_alb_sg_tags
+}
+
 module "vpn_sg" {
-    source = "git::https://github.com/daws-81s/terraform-aws-security-group.git?ref=main"
+    source = "git::https://github.com/ramchandra90/terraform-aws-security-groups.git?ref=main"
     project_name = var.project_name
     environment = var.environment
     sg_name = "vpn" #expense-dev-app-alb
     vpc_id = local.vpc_id
     common_tags = var.common_tags
 }
+
 
 # Mysql allowing connection on 3306 from instances attached to backend SG
 resource "aws_security_group_rule" "mysql_backend" {
@@ -255,3 +266,20 @@ resource "aws_security_group_rule" "backend_vpn_8080" {
   security_group_id = module.backend_sg.id
 }
 
+resource "aws_security_group_rule" "web_alb_https" {
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = module.web_alb_sg.id
+}
+
+resource "aws_security_group_rule" "web_alb_http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = module.web_alb_sg.id
+}

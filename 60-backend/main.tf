@@ -75,7 +75,7 @@ resource "aws_lb_target_group" "backend" {
   name     = local.resource_name
   port     = 8080
   protocol = "HTTP"
-  vpc_id   = local.vpc_id
+  vpc_id   = local.vpc_id # vpc_id first needs to created in data file and then needs to create in locals from their we need to call
 
   health_check {
     healthy_threshold = 2
@@ -174,7 +174,7 @@ resource "aws_lb_listener_rule" "backend" {
 
   condition {
     host_header {
-      values = ["${var.backend_tags.Component}.app-${var.environment}.${var.zone_name}"]
+      values = ["${var.backend_tags.Component}.app-${var.environment}.${var.zone_name}"] # this calling from variable backend tags and variable zone_name
     }
   }
 }

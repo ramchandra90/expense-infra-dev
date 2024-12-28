@@ -59,3 +59,9 @@ variable "app_alb_sg_tags" {
         component = "app_alb"
     }
 }
+
+variable "web_alb_sg_tags" {
+    default = {
+        component = "web_alb"
+    }
+}
